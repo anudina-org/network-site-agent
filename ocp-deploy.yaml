@@ -1,0 +1,61 @@
+---
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: network-agent
+  labels:
+    app: network-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: network-agent
+  template:
+    metadata:
+      labels:
+        app: network-agent
+    spec:
+      containers:
+      - name: network-agent
+        image: <your-docker-hub-username>/network-agent:latest
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: network-agent
+  labels:
+    app: network-agent
+spec:
+  ports:
+  - port: 8000
+    targetPort: 8000
+  selector:
+    app: network-agent
+
+---
+# Route
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: network-agent
+  labels:
+    app: network-agent
+spec:
+  host: network-agent.apps-crc.testing
+  to:
+    kind: Service
+    name: network-agent
+  port:
+    targetPort: 8000
