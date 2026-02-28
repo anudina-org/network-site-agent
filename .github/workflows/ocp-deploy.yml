@@ -9,9 +9,9 @@ jobs:
   build-and-deploy:
     runs-on: [self-hosted, np-runner]
     # run commands from the network-agent subdirectory so paths remain simple
-    defaults:
-      run:
-        working-directory: network-agent
+    # defaults:
+    #   run:
+    #     working-directory: network-agent
     env:
       IMAGE_NAME: anandms2026/network-agent
       TAG: uat
