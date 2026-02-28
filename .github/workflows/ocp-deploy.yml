@@ -36,7 +36,8 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         # action runs from repo root; point build context to subdirectory
-        context: ./network-agent
+        context: .
+        file: ./Dockerfile
         push: true
         tags: ${{ env.IMAGE_NAME }}:${{ env.TAG }}
 
@@ -56,6 +57,6 @@ jobs:
     - name: Deploy to OpenShift
       run: |
         # paths relative to repo root, so include subdirectory
-        oc apply -f network-agent/ocp-deploy.yaml
+        oc apply -f ocp-deploy.yaml
         oc set image deployment/network-agent network-agent=${{ env.IMAGE_NAME }}:${{ env.TAG }}
         oc rollout status deployment/network-agent --timeout=2m
