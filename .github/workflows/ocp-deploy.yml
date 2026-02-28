@@ -34,13 +34,13 @@ jobs:
     - name: Login to OpenShift
       run: |
         # Using the full path we just verified
-        /usr/bin/oc login ${{ secrets.OCP_API_URL }} \
+        oc login ${{ secrets.OCP_API_URL }} \
            --token=${{ secrets.OCP_TOKEN }} \
            --insecure-skip-tls-verify
-        /usr/bin/oc project ${{ env.OC_PROJECT }}
+        oc project ${{ env.OC_PROJECT }}
 
     - name: Deploy to OpenShift
       run: |
-        /usr/bin/oc apply -f ocp-deploy.yaml
-        /usr/bin/oc set image deployment/network-agent network-agent=${{ env.IMAGE_NAME }}:${{ env.TAG }}
-        /usr/bin/oc rollout status deployment/network-agent --timeout=2m
+        oc apply -f ocp-deploy.yaml
+        oc set image deployment/network-agent network-agent=${{ env.IMAGE_NAME }}:${{ env.TAG }}
+        oc rollout status deployment/network-agent --timeout=2m
