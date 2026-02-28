@@ -11,7 +11,7 @@ jobs:
     env:
       IMAGE_NAME: anandms2026/network-agent
       TAG: uat
-      OC_PROJECT: dagentic-space
+      OC_PROJECT: agentic-space
 
     steps:
     - name: Checkout repository
