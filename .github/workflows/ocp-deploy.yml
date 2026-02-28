@@ -8,23 +8,14 @@ on:
 jobs:
   build-and-deploy:
     runs-on: [self-hosted, np-runner]
-    # run commands from the network-agent subdirectory so paths remain simple
-    # defaults:
-    #   run:
-    #     working-directory: network-agent
     env:
       IMAGE_NAME: anandms2026/network-agent
       TAG: uat
-      OC_PROJECT: agentic-space
+      OC_PROJECT: dagentic-space
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-
-    # - name: Set up QEMU (for multiarch if needed)
-    #   uses: docker/setup-qemu-action@v2
-
-    # - name: Set up Docker Buildx
-    #   uses: docker/setup-buildx-action@v2
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
@@ -35,28 +26,21 @@ jobs:
     - name: Build and push image
       uses: docker/build-push-action@v4
       with:
-        # action runs from repo root; point build context to subdirectory
+        # "." works because your files are in the root of the repo
         context: .
-        file: ./Dockerfile
         push: true
         tags: ${{ env.IMAGE_NAME }}:${{ env.TAG }}
 
-    # - name: Install oc CLI
-    #   run: |
-    #     curl -L -o oc.tar.gz https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/openshift-client-linux.tar.gz
-    #     tar -xzf oc.tar.gz oc
-    #     sudo mv oc /usr/local/bin/
-    #     oc version
     - name: Login to OpenShift
       run: |
-        oc login ${{ secrets.OCP_API_URL }} \
+        # Using the full path we just verified
+        /usr/bin/oc login ${{ secrets.OCP_API_URL }} \
            --token=${{ secrets.OCP_TOKEN }} \
            --insecure-skip-tls-verify
-        oc project ${{ env.OC_PROJECT }}
+        /usr/bin/oc project ${{ env.OC_PROJECT }}
 
     - name: Deploy to OpenShift
       run: |
-        # paths relative to repo root, so include subdirectory
-        oc apply -f ocp-deploy.yaml
-        oc set image deployment/network-agent network-agent=${{ env.IMAGE_NAME }}:${{ env.TAG }}
-        oc rollout status deployment/network-agent --timeout=2m
+        /usr/bin/oc apply -f ocp-deploy.yaml
+        /usr/bin/oc set image deployment/network-agent network-agent=${{ env.IMAGE_NAME }}:${{ env.TAG }}
+        /usr/bin/oc rollout status deployment/network-agent --timeout=2m
