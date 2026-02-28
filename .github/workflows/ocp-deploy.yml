@@ -15,7 +15,7 @@ jobs:
     env:
       IMAGE_NAME: anandms2026/network-agent
       TAG: uat
-      OC_PROJECT: dagentic-space
+      OC_PROJECT: agentic-space
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -41,12 +41,12 @@ jobs:
         push: true
         tags: ${{ env.IMAGE_NAME }}:${{ env.TAG }}
 
-    - name: Install oc CLI
-      run: |
-        curl -L -o oc.tar.gz https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/openshift-client-linux.tar.gz
-        tar -xzf oc.tar.gz oc
-        sudo mv oc /usr/local/bin/
-        oc version
+    # - name: Install oc CLI
+    #   run: |
+    #     curl -L -o oc.tar.gz https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/openshift-client-linux.tar.gz
+    #     tar -xzf oc.tar.gz oc
+    #     sudo mv oc /usr/local/bin/
+    #     oc version
     - name: Login to OpenShift
       run: |
         oc login ${{ secrets.OCP_API_URL }} \
