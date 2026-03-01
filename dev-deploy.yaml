@@ -1,16 +1,8 @@
----
-# 1. Namespace (The container for everything)
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: agentic-space
----
-# 2. Deployment (Original Resources + Tolerations)
+# 1. Deployment (Your original spec)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: network-agent
-  namespace: agentic-space
   labels:
     app: network-agent
 spec:
@@ -41,12 +33,11 @@ spec:
         operator: "Exists"
         effect: "NoSchedule"
 ---
-# 3. Service
+# 2. Service
 apiVersion: v1
 kind: Service
 metadata:
   name: network-agent
-  namespace: agentic-space
   labels:
     app: network-agent
 spec:
@@ -56,12 +47,11 @@ spec:
   selector:
     app: network-agent
 ---
-# 4. Route (Nip.io for Mac Access)
+# 3. Route (The nip.io fix for Mac browser access)
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: network-agent
-  namespace: agentic-space
   labels:
     app: network-agent
 spec:
@@ -72,12 +62,13 @@ spec:
   port:
     targetPort: 8000
 ---
-# 5. NetworkPolicy (The "Unlock" for External Traffic)
+# 4. NetworkPolicy (Allows the Router to talk to your Pod)
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-from-ingress
-  namespace: agentic-space
+  labels:
+    app: network-agent
 spec:
   podSelector:
     matchLabels:
