@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: network-agent
-        image: <your-docker-hub-username>/network-agent:latest
+        image: docker.io/anandms2026/network-agent:uat
         ports:
         - containerPort: 8000
         resources:
