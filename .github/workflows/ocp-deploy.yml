@@ -46,6 +46,6 @@ jobs:
 
     - name: Deploy to OpenShift
       run: |
-        oc apply -f dev-deploy.yaml
-        oc set image deployment/network-agent network-agent=${{ env.IMAGE_NAME }}:${{ env.TAG }}
+        oc apply -f dev-deploy.yaml -n agentic-space
+        oc set image deployment/network-agent network-agent=${{ env.IMAGE_NAME }}:${{ env.TAG }} 
         oc rollout status deployment/network-agent --timeout=2m
