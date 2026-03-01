@@ -55,7 +55,7 @@ metadata:
   labels:
     app: network-agent
 spec:
-  host: network-agent.192.168.130.11.nip.io
+  host: network-agent.47.193.48.217.nip.io
   to:
     kind: Service
     name: network-agent
