@@ -61,22 +61,3 @@ spec:
     name: network-agent
   port:
     targetPort: 8000
----
-# 4. NetworkPolicy (Allows the Router to talk to your Pod)
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-from-ingress
-  labels:
-    app: network-agent
-spec:
-  podSelector:
-    matchLabels:
-      app: network-agent
-  ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          network.openshift.io/policy-group: ingress
-  policyTypes:
-  - Ingress
