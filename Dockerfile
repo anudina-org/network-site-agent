@@ -3,6 +3,7 @@ FROM python:3.14-slim AS builder
 
 WORKDIR /tmp
 COPY requirements.txt .
+RUN pip install --user -r requirements.txt
 RUN pip install --user --no-cache-dir -r requirements.txt
 
 # Final stage
