@@ -9,7 +9,7 @@ jobs:
   build-and-deploy:
     runs-on: [self-hosted, np-runner]
     env:
-      IMAGE_NAME: anandms2026/network-agent
+      IMAGE_NAME: docker.io/anandms2026/network-agent
       TAG: uat
       OC_PROJECT: agentic-space
 
