@@ -19,6 +19,7 @@ spec:
       containers:
       - name: network-agent
         image: docker.io/anandms2026/network-agent:uat
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
         resources:
